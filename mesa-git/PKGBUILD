@@ -1,15 +1,9 @@
-# Maintainer: Reza Jahanbakhshi <reza.jahanbakhshi at gmail dot com
-# Contributor: Lone_Wolf <lone_wolf@klaas-de-kat.nl>
-# Contributor: Armin K. <krejzi at email dot com>
-# Contributor: Kristian Klausen <klausenbusk@hotmail.com>
-# Contributor: Egon Ashrafinia <e.ashrafinia@gmail.com>
-# Contributor: Tavian Barnes <tavianator@gmail.com>
-# Contributor: Jan de Groot <jgc@archlinux.org>
-# Contributor: Andreas Radke <andyrtr@archlinux.org>
-# Contributor: Thomas Dziedzic < gostrc at gmail >
-# Contributor: Antti "Tera" Oja <antti.bofh@gmail.com>
-# Contributor: Diego Jose <diegoxter1006@gmail.com>
-
+# Maintainer: centi_07 <centi07 at proton dot me>
+# based mesa-git by
+# Yurii Kolesnykov <root at yurikoles dot com>
+#
+# Send PRs here: https://github.com/centi07/arch-ps4-aur
+#
 pkgname=mesa-ps4
 pkgdesc="an open-source implementation of the OpenGL specification, git version"
 pkgver=26.0.0_devel.214014.fd55e874ed0.d41d8cd

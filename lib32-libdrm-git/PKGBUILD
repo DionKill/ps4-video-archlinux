@@ -1,8 +1,9 @@
-# Maintainer : Lone_Wolf <lonewolf@klaas-de-kat.nl>
-# Contributor : Eric Engestrom <eric@engestrom.ch>
-# Contributor: Laurent Carlier <lordheavym@gmail.com>
-# Contributor : Jan de Groot <jgc@archlinux.org>
-
+# Maintainer: centi_07 <centi07 at proton dot me>
+# based on lib32=libdrm-git by
+# Yurii Kolesnykov <root at yurikoles dot com>
+#
+# Send PRs here: https://github.com/centi07/arch-ps4-aur
+#
 pkgname=lib32-libdrm-ps4
 pkgver=2.4.114.r2.ge699b28b
 pkgrel=1
