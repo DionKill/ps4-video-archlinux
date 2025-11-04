@@ -1,4 +1,4 @@
-name: Build video-drivers-ps4-build
+name: Build lib32-libdrm-ps4
 
 on:
   push:
@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Enable multilib for archlinux
+        run: |
+          echo "[multilib] \
+          Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
       - name: Initialize Arch keyring
         run: |
@@ -26,7 +31,7 @@ jobs:
           pacman -S --noconfirm base-devel git
 
       - name: Compile using PKGBUILD
-        working-directory: video-drivers-ps4-build
+        working-directory: lib32-libdrm-ps4
         run: |
           echo "%root ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
           useradd -m someuser
@@ -35,12 +40,12 @@ jobs:
           su someuser /bin/bash -c 'makepkg --noconfirm -s'
           
       - name: Compress artifacts
-        working-directory: video-drivers-ps4-build
+        working-directory: lib32-libdrm-ps4
         run: |
           tar -czvf artifacts.tar.xz *.pkg.tar.zst --remove-files
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: video-drivers-ps4-build
-          path: video-drivers-ps4-build/artifacts.tar.xz
+          name: lib32-libdrm-ps4
+          path: lib32-libdrm-ps4/artifacts.tar.xz

@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      - name: Enable multilib for archlinux
+        run: |
+          echo "[multilib] \
+          Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
       - name: Initialize Arch keyring
         run: |
