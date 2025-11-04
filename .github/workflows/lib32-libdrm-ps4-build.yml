@@ -17,8 +17,8 @@ jobs:
       
       - name: Enable multilib for archlinux
         run: |
-          echo "[multilib] \
-          Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+          echo "[multilib]" >> /etc/pacman.conf
+          echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
       - name: Initialize Arch keyring
         run: |
