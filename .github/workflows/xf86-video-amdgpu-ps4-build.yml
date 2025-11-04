@@ -26,11 +26,10 @@ jobs:
           pacman -S --noconfirm base-devel git
 
       - name: Compile
+        uses: mijailr/arch-makepkg-action@v1
         working-directory: xf86-video-amdgpu-ps4
-        run: |
-          makepkg -s
 
-      - name: Package build
+      - name: Compress artifacts
         working-directory: xf86-video-amdgpu-ps4
         run: |
           tar -czvf artifacts.tar.xz *.pkg.tar.zst --remove-files
