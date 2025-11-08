@@ -145,10 +145,10 @@ index b4e3ef5295c..b617a4cc8ce 100644
        break;
     case FMASK_DECOMPRESS:
        pred_offset = 0; /* FMASK_DECOMPRESS is never predicated. */
-diff --git a/src/amd/vulkan/winsys/null/radv_null_winsys.c b/src/amd/vulkan/winsys/null/radv_null_winsys.c
+diff --git a/src/amd/vulkan/winsys/amdgpu/radv_amdgpu_winsys.c b/src/amd/vulkan/winsys/amdgpu/radv_amdgpu_winsys.c
 index e0c0a04856a..cf367b77832 100644
---- a/src/amd/vulkan/winsys/null/radv_null_winsys.c
-+++ b/src/amd/vulkan/winsys/null/radv_null_winsys.c
+--- a/src/amd/vulkan/winsys/amdgpu/radv_amdgpu_winsys.c
++++ b/src/amd/vulkan/winsys/amdgpu/radv_amdgpu_winsys.c
 @@ -27,6 +27,10 @@ static const struct {
     [CHIP_OLAND] = {0x6060, 2, true},
     [CHIP_HAINAN] = {0x6660, 2, true},
