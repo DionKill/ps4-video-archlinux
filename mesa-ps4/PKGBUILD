@@ -87,8 +87,7 @@ license=('custom')
 source=(
     'mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=main'
     'LICENSE'
-    'mesa-24.0.9.patch'
-    'mesa-ps4-9999-r1.patch'
+    'mesa-26.patch'
 )
 sha256sums=('SKIP'
             'SKIP'
@@ -96,10 +95,8 @@ sha256sums=('SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
-            'SKIP'
             'SKIP')
 b2sums=('SKIP'
-        'SKIP'
         'SKIP'
         'SKIP'
         'SKIP'
