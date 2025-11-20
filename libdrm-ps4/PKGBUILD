@@ -6,7 +6,7 @@
 #
 pkgname=libdrm-ps4
 _realname=libdrm
-pkgver=2.4.128.r1.g39680280
+pkgver=2.4.129.r0.ga8e5e10a
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services, master git version"
 arch=(i686 x86_64)
@@ -20,7 +20,7 @@ conflicts=('libdrm')
 
 source=('libdrm::git+https://gitlab.freedesktop.org/mesa/drm.git'
         COPYING
-        'libdrm-2.4.120.patch')
+        'libdrm-26.patch')
 sha512sums=('SKIP'
             'b0ca349b882a4326b19f81f22804fabdb6fb7aef31cdc7b16b0a7ae191bfbb50c7daddb2fc4e6c33f1136af06d060a273de36f6f3412ea326f16fa4309fda660'
             'SKIP')

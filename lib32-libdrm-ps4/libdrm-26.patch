@@ -1,0 +1,41 @@
+diff -Naur drm/data/amdgpu.ids drm-patch/data/amdgpu.ids
+--- drm/data/amdgpu.ids	2025-11-02 14:54:03.757976291 +0100
++++ drm-patch/data/amdgpu.ids	2025-11-02 17:28:13.612411100 +0100
+@@ -474,6 +474,10 @@
+ 699F,	C9,	AMD Radeon 540
+ 6FDF,	E7,	AMD Radeon RX 590 GME
+ 6FDF,	EF,	AMD Radeon RX 580 2048SP
++9920,	00,     AMD Liverpool (PlayStation 4)
++9922,	00,     AMD Liverpool (PlayStation 4)
++9923,	00,     AMD Liverpool (PlayStation 4)
++9924,	11,     AMD Gladius (PlayStation 4)
+ 7300,	C1,	AMD FirePro S9300 x2
+ 7300,	C8,	AMD Radeon R9 Fury Series
+ 7300,	C9,	AMD Radeon Pro Duo
+diff -Naur drm/radeon/r600_pci_ids.h drm-patch/radeon/r600_pci_ids.h
+--- drm/radeon/r600_pci_ids.h	2025-11-02 14:54:03.774719177 +0100
++++ drm-patch/radeon/r600_pci_ids.h	2025-11-02 17:30:05.025872969 +0100
+@@ -473,6 +473,11 @@
+ CHIPSET(0x131C, KAVERI_131C, KAVERI)
+ CHIPSET(0x131D, KAVERI_131D, KAVERI)
+ 
++CHIPSET(0x9920, LIVERPOOL_9920, LIVERPOOL)
++CHIPSET(0x9922, LIVERPOOL_9922, LIVERPOOL)
++CHIPSET(0x9923, LIVERPOOL_9923, LIVERPOOL)
++CHIPSET(0x9924, GLADIUS_9924, GLADIUS)
++
+ CHIPSET(0x67A0, HAWAII_67A0, HAWAII)
+ CHIPSET(0x67A1, HAWAII_67A1, HAWAII)
+ CHIPSET(0x67A2, HAWAII_67A2, HAWAII)
+diff -Naur drm/radeon/radeon_surface.c drm-patch/radeon/radeon_surface.c
+--- drm/radeon/radeon_surface.c	2025-11-02 14:54:03.774719177 +0100
++++ drm-patch/radeon/radeon_surface.c	2025-11-02 17:31:28.506997037 +0100
+@@ -86,6 +86,8 @@
+     CHIP_HAINAN,
+     CHIP_BONAIRE,
+     CHIP_KAVERI,
++    CHIP_LIVERPOOL,
++    CHIP_GLADIUS,    
+     CHIP_KABINI,
+     CHIP_HAWAII,
+     CHIP_MULLINS,

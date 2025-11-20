@@ -5,7 +5,7 @@
 # Send PRs here: https://github.com/centi07/arch-ps4-aur
 #
 pkgname=lib32-libdrm-ps4
-pkgver=2.4.128.r1.g39680280
+pkgver=2.4.129.r0.ga8e5e10a
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services, git 32-bit version"
 arch=(x86_64)
@@ -19,7 +19,7 @@ conflicts=('lib32-libdrm')
 
 source=('libdrm::git+https://gitlab.freedesktop.org/mesa/drm.git'
         COPYING
-        'libdrm-2.4.120.patch')
+        'libdrm-26.patch')
 sha256sums=('SKIP'
             '9631d4f694952e3e6ae5a05534c2e93e994e47d3413677a3a00e45c8cef6db93'
             'SKIP')

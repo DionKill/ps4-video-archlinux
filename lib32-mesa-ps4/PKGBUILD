@@ -77,15 +77,12 @@ license=('custom')
 source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=main'
         'LICENSE'
         'llvm32.native'
-        'mesa-24.0.9.patch'
-        'mesa-ps4-9999-r1.patch')
+        'libdrm-26.patch')
 sha256sums=('SKIP'
-            'SKIP'
             'SKIP'
             'SKIP'
             'SKIP')
 b2sums=('SKIP'
-        'SKIP'
         'SKIP'
         'SKIP'
         'SKIP')
