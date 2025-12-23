@@ -1,30 +1,30 @@
-# Maintainer: centi_07 <centi07 at proton dot me>
-# based xf860video-amdgpu-git by
-# Yurii Kolesnykov <root at yurikoles dot com>
-#
-# Send PRs here: https://github.com/centi07/arch-ps4-aur
-#
+# Maintainer: Laurent Carlier <lordheavym@gmail.com>
 
-pkgname=xf86-video-amdgpu-ps4
+pkgname=xf86-video-amdgpu
 pkgver=25.0.0
 pkgrel=1
-pkgdesc="X.org amdgpu video driver (git version)"
+pkgdesc="X.org amdgpu video driver"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('MIT')
 depends=('systemd-libs' 'mesa' 'libdrm' 'glibc')
-makedepends=('git' 'meson' 'xorg-server-devel' 'systemd')
-provides=("xf86-video-amdgpu=${pkgver}")
-conflicts=("xf86-video-amdgpu")
-groups=('xorg-drivers-git')
-source=("${pkgname}::git+https://gitlab.freedesktop.org/xorg/driver/xf86-video-amdgpu.git"
-        'amdgpu-23.0.0.patch')
-sha256sums=('SKIP'
-            'SKIP')
+makedepends=('xorg-server-devel' 'systemd' 'X-ABI-VIDEODRV_VERSION=25.2' 'meson')
+conflicts=('xorg-server<1.20.0' 'X-ABI-VIDEODRV_VERSION<25' 'X-ABI-VIDEODRV_VERSION>=26')
+groups=('xorg-drivers')
+source=(
+  ${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.xz{,.sig}
+  ps4-xf86-video-amdgpu.patch
+)
+sha512sums=('d143294fead7073c14100299ccab20d1f5eab8b7e36c1770b12aaade958211e1961f4353dc47123c3b9af9f7a911d913def71d25b83dab3dee1d289043869891'
+            'SKIP'
+            '53f72b735efc3a11bb8363970be770b6c771ef882266dd38b02673ac37f3addec0acaaf238fb8d15a63356b0b08c7d46cecd30954cd06d6e78e1491ef68af6f3')
+#validpgpkeys=('B09FAF35BE914521980951145A81AF8E6ADBB200') # Michel Daenzer <michel@daenzer.net>
+#validpgpkeys=('017E91A875CBA321258380F19B4EE4F98474DE40') # "Alex Deucher <alexdeucher@gmail.com>"
+validpgpkeys=('F1111E4AAF984C9763795FFE4B25B5180522B8D9') # Shashank Sharma <contactshashanksharma@gmail.com>
 
-pkgver() {
-  cd ${pkgname}
-  git describe --tags | sed "s/^xf86-video-amdgpu.//;s/\([^-]*-g\)/r\1/;s/-/./g"
+prepare() {
+  cd $pkgname-$pkgver
+  patch -Np1 -i "$srcdir/ps4-xf86-video-amdgpu.patch"
 }
 
 build() {
@@ -35,9 +35,11 @@ build() {
   export CXXFLAGS=${CXXFLAGS/-fno-plt}
   export LDFLAGS=${LDFLAGS/-Wl,-z,now}
 
-  #CFLAGS+=' -fcommon' # https://wiki.gentoo.org/wiki/Gcc_10_porting_notes/fno_common
+  arch-meson $pkgname-$pkgver build \
+    -D glamor=enabled
 
-  arch-meson "${pkgname}" build -Dglamor=enabled
+  # Print config
+  meson configure build
 
   meson compile -C build
 }
@@ -47,8 +49,7 @@ check() {
 }
 
 package() {
-  meson install -C build --no-rebuild --destdir "${pkgdir}" --quiet
-
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 "${pkgname}/COPYING" "${pkgdir}/usr/share/licenses/${pkgname}/"
+  meson install -C build --destdir "$pkgdir"
+  install -Dvm644 $pkgname-$pkgver/COPYING \
+    "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }

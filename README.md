@@ -38,7 +38,7 @@ Update the signatures by running:
 Then, use `makepkg -s` to build.
 
 If it doesn't build because of a PGP error:
-- take that key in the error, run gpg --keyserver keyserver.ubuntu.com --recv-keys (KEY HERE) and check that it's valid, then import it with gpg --lsign-key (KEY HERE). don't use parenthesis.
+- take that key in the error, run `gpg --keyserver keyserver.ubuntu.com --recv-keys (KEY HERE)` and check that it's valid, then import it with `gpg --lsign-key (KEY HERE)`. don't use parenthesis.
 - OR do this instead:
 ```bash
 sudo pacman -Sy archlinux-keyring
