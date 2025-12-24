@@ -14,7 +14,7 @@ pkgname=(
   #lib32-vulkan-gfxstream
   #lib32-vulkan-intel
   #lib32-vulkan-nouveau
-  lib32-vulkan-radeon
+  #lib32-vulkan-radeon
   #lib32-vulkan-swrast
   #lib32-vulkan-virtio
   #lib32-vulkan-mesa-implicit-layers
@@ -35,7 +35,7 @@ makedepends=(
   lib32-gcc-libs
   lib32-glibc
   lib32-libdisplay-info
-  lib32-libdrm
+  lib32-libdrm-ps4
   lib32-libelf
   lib32-libglvnd
   lib32-libpng
@@ -271,7 +271,7 @@ package_lib32-mesa() {
     lib32-expat
     lib32-gcc-libs
     lib32-glibc
-    lib32-libdrm
+    lib32-libdrm-ps4
     lib32-libelf
     lib32-libglvnd
     lib32-libx11
@@ -362,7 +362,7 @@ package_lib32-opencl-mesa() {
     lib32-expat
     lib32-gcc-libs
     lib32-glibc
-    lib32-libdrm
+    lib32-libdrm-ps4
     lib32-libelf
     lib32-llvm-libs
     lib32-spirv-llvm-translator
@@ -665,7 +665,7 @@ package_lib32-vulkan-mesa-implicit-layers() {
   depends=(
     lib32-gcc-libs
     lib32-glibc
-    lib32-libdrm
+    lib32-libdrm-ps4
     lib32-libxcb
     lib32-wayland
 

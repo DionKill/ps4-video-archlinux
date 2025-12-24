@@ -14,7 +14,7 @@ pkgname=(
   #vulkan-gfxstream
   #vulkan-intel
   #vulkan-nouveau
-  vulkan-radeon
+  #vulkan-radeon
   #vulkan-swrast
   #vulkan-virtio
   #vulkan-mesa-implicit-layers
@@ -37,7 +37,7 @@ makedepends=(
   gcc-libs
   glibc
   libdisplay-info
-  libdrm
+  libdrm-ps4
   libelf
   libglvnd
   libpng
@@ -280,7 +280,7 @@ package_mesa() {
     expat
     gcc-libs
     glibc
-    libdrm
+    libdrm-ps4
     libelf
     libglvnd
     libx11
@@ -375,7 +375,7 @@ package_opencl-mesa() {
     expat
     gcc-libs
     glibc
-    libdrm
+    libdrm-ps4
     libelf
     llvm-libs
     spirv-llvm-translator
