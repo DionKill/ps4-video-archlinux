@@ -10,7 +10,7 @@ For the binary repository, add these lines into `/etc/pacman.conf`
 ```bash
 [ps4-video]
 SigLevel = Optional 
-Server = https://centi07.github.io/repo/
+Server = https://github.com/DionKill/ps4-video-archlinux/
 ```
 
 ## Replicate this repository
