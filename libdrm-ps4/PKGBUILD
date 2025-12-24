@@ -1,6 +1,6 @@
 # Maintainer: Andreas Radke <andyrtr@archlinux.org>
 
-pkgname=libdrm
+pkgname=libdrm-ps4
 pkgver=2.4.131
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"

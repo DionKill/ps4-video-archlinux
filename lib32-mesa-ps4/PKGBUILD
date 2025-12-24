@@ -4,7 +4,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Andreas Radke <andyrtr@archlinux.org>
 
-pkgbase=lib32-mesa
+pkgbase=lib32-mesa-ps4
 pkgname=(
   lib32-mesa
   lib32-opencl-mesa

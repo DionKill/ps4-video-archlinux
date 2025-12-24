@@ -1,18 +1,22 @@
 # Maintainer: centi_07 <centi07 at proton dot me>
+# Fork Maintainer: DionKill
 
 pkgsubn=metapkg
 pkgname=video-drivers-ps4
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
-pkgdesc="metapackage for ps4 video drivers"
+pkgdesc="Meta package for PS4 GPU drivers. This is just a simple way to install all the packages."
 arch=('any')
 license=('MIT')
 sha256sums=('SKIP')
-source=("https://github.com/philc/vimium/archive/refs/tags/v2.1.2.tar.gz")
-depends=( 'libdrm-ps4' 'lib32-libdrm-ps4' 'mesa-ps4' 'lib32-mesa-ps4' 'xf86-video-amdgpu-ps4')
+source=("https://github.com/DionKill/ps4-video-archlinux/")
+depends=(
+  'libdrm-ps4'
+  'lib32-libdrm-ps4'
+  'mesa-ps4'
+  'lib32-mesa-ps4'
+  'xf86-video-amdgpu-ps4'
+)
 package() {
-    mkdir -p "$pkgdir/usr/share/"
-
-    cd "$pkgsubn-$pkgver"
-    cp -r --no-preserve=ownership . "$pkgdir/usr/share/$pkgname-$pkgver"
+    true
 }

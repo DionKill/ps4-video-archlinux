@@ -2,7 +2,7 @@
 # Contributor: Jan de Groot <jgc@archlinux.org>
 
 _pkgbasename=libdrm
-pkgname=lib32-$_pkgbasename
+pkgname=lib32-$_pkgbasename-ps4
 pkgver=2.4.131
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services (32-bit)"

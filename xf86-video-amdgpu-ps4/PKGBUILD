@@ -1,6 +1,6 @@
 # Maintainer: Laurent Carlier <lordheavym@gmail.com>
 
-pkgname=xf86-video-amdgpu
+pkgname=xf86-video-amdgpu-ps4
 pkgver=25.0.0
 pkgrel=1
 pkgdesc="X.org amdgpu video driver"
