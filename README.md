@@ -1,5 +1,8 @@
-# PS4 up-to-date drivers for ArchLinux
+# PS4 up-to-date drivers for Arch Linux
 These are up-to-date drivers with patches to work on the PS4 console.
+
+> [!TIP]
+> You can take the up-to-date patches and apply them on mesa-git as well, if you want to compile for every distro. I use Arch solely because it's easier to patch and less of a pain in the ass than Gentoo.
 
 Here there are all of the PKGBUILDs that you need to build your own. They have been modified in the sense that they add patch files which allows them to do fix compatibility with the PS4.
 
