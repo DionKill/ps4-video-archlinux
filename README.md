@@ -1,7 +1,7 @@
 # PS4 up-to-date drivers for Arch Linux
 These are up-to-date drivers with patches to work on the PS4 console.
 
-[!image]{image.png}
+|[proof](image.png)
 
 > [!TIP]
 > You can take the up-to-date patches and apply them on mesa-git as well, if you want to compile for every distro. I use Arch solely because it's easier to patch and less of a pain in the ass than Gentoo.
@@ -15,7 +15,7 @@ For the binary repository, add these lines into `/etc/pacman.conf`
 ```bash
 [ps4-video]
 SigLevel = Optional 
-Server = https://github.com/DionKill/ps4-video-archlinux/
+Server = https://dionkill.github.io/ps4-video-archlinux/repo/
 ```
 
 ## Replicate this repository
