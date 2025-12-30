@@ -18,6 +18,8 @@ SigLevel = Optional
 Server = https://dionkill.github.io/ps4-video-archlinux/repo/
 ```
 
+Lastly, execute `sudo pacman -Syy` to update the configuration.
+
 ## Replicate this repository
 Build tools
 ```bash
