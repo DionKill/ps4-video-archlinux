@@ -192,8 +192,8 @@ build () {
         -D sysconfdir=/etc \
         --libdir=/usr/lib32 \
         -D platforms=x11,wayland \
-        -D gallium-drivers=r300,r600,radeonsi,svga,softpipe,llvmpipe,virgl,zink \
-        -D vulkan-drivers=amd,swrast,virtio \
+        -D gallium-drivers=r300,r600,radeonsi,nouveau,svga,softpipe,llvmpipe,virgl,iris,zink,crocus \
+        -D vulkan-drivers=amd,intel,swrast,virtio,intel_hasvk \
         -D egl=enabled \
         -D gallium-extra-hud=true \
         -D vulkan-layers=device-select,overlay \
