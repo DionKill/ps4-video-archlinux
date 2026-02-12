@@ -1,0 +1,10 @@
+# Exclude all development folders and files
+/**/libdrm
+/**/mesa
+/xf86-video-amdgpu-ps4/xf86-video-amdgpu-ps4
+/**/pkg
+/**/src
+*.tar.zst
+
+# Re-include all types of files inside of the repository folder
+!/repo/*

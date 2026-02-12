@@ -12,7 +12,7 @@
 
 pkgname=lib32-mesa-ps4
 pkgdesc="an open-source implementation of the OpenGL specification, git version"
-pkgver=25.3.2.214022.34e31019366.d9a8cd9
+pkgver=25.3.5.214264.39f24bf4091.d9a8cd9
 pkgrel=1
 arch=('x86_64')
 makedepends=(
