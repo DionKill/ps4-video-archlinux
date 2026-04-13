@@ -78,7 +78,7 @@ conflicts=(
 )
 url="https://www.mesa3d.org"
 license=('custom')
-source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=25.3'
+source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=26.0'
         'LICENSE'
         'llvm32.native'
         'ps4-lib32-mesa.patch')

@@ -89,7 +89,7 @@ url="https://www.mesa3d.org"
 license=('custom')
 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/29275
 source=(
-    'mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=25.3'
+    'mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=26.0'
     'LICENSE'
     'ps4-mesa.patch'
 )
@@ -204,7 +204,7 @@ case $MESA_WHICH_LLVM in
             'rust-bindgen'
         )
         depends+=(
-            'libLLVM.so=21.1-64'
+            'libLLVM.so=22.1-64'
             'clang'
             'libclc'
             'spirv-llvm-translator'

@@ -1,0 +1,92 @@
+name: Build PS4 Mesa stack (no container)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Arch bootstrap
+        run: |
+          set -eux
+
+          curl -LO https://geo.mirror.pkgbuild.com/iso/latest/archlinux-bootstrap-x86_64.tar.zst
+          tar --zstd -xvf archlinux-bootstrap-x86_64.tar.zst || true
+
+      - name: Setup Arch environment
+        run: |
+          set -eux
+
+          sudo cp -r root.x86_64 /arch
+          sudo sed -i 's/^#Server/Server/' /arch/etc/pacman.d/mirrorlist
+
+          sudo mount --bind /dev /arch/dev
+          sudo mount --bind /proc /arch/proc
+          sudo mount --bind /sys /arch/sys
+          sudo mount --bind /run /arch/run
+
+          sudo chroot /arch /bin/bash -c "pacman-key --init"
+          sudo chroot /arch /bin/bash -c "pacman-key --populate archlinux"
+          sudo chroot /arch /bin/bash -c "pacman -Syu --noconfirm"
+
+      - name: Install devtools
+        run: |
+          sudo arch-chroot /arch pacman -S --noconfirm \
+            devtools base-devel git sudo
+
+      - name: Create builder user
+        run: |
+          sudo arch-chroot /arch useradd -m builder
+          echo "builder ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /arch/etc/sudoers
+
+      - name: Copy sources
+        run: |
+          sudo mkdir -p /arch/build
+          sudo cp -r . /arch/build/src
+          sudo chown -R 1000:1000 /arch/build
+
+      - name: Build packages
+        run: |
+          sudo arch-chroot /arch bash -c '
+            set -eux
+
+            cd /build/src
+            mkdir -p repo
+
+            build_pkg() {
+              cd /build/src/$1
+              sudo -u builder extra-x86_64-build -- --noconfirm --skippgpcheck
+              mv *.pkg.tar.zst /build/src/repo/
+            }
+
+            build_pkg libdrm-ps4
+            build_pkg lib32-libdrm-ps4
+            build_pkg xf86-video-amdgpu-ps4
+            build_pkg mesa-ps4
+            build_pkg lib32-mesa-ps4
+          '
+
+      - name: Copy artifacts back
+        run: |
+          sudo cp -r /arch/build/src/repo ./repo
+
+      - name: Create repo db
+        run: |
+          cd repo
+          repo-add ps4-video.db.tar.zst *.pkg.tar.zst
+
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+
+          git add repo/*
+          git commit -m "Update $(date)" || true
+          git push
