@@ -51,15 +51,6 @@ index 2c1cd5e8152..1b78c2fdf3f 100644
           identify_chip2(KALINDI, KABINI);
           identify_chip2(GODAVARI, KABINI);
           break;
-@@ -1129,6 +1131,8 @@ bool ac_query_gpu_info(int fd, void *dev_p, struct radeon_info *info,
-       case CHIP_VERDE:
-       case CHIP_HAINAN:
-       case CHIP_BONAIRE:
-+      case CHIP_LIVERPOOL:
-+      case CHIP_GLADIUS:
-       case CHIP_KAVERI:
-       case CHIP_ICELAND:
-       case CHIP_CARRIZO:
 @@ -2137,6 +2141,8 @@ int ac_get_gs_table_depth(enum amd_gfx_level gfx_level, enum radeon_family famil
     case CHIP_TAHITI:
     case CHIP_PITCAIRN:
