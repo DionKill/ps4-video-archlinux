@@ -21,7 +21,17 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: true
-
+      
+      - name: Verify checkout
+        shell: bash
+        run: |
+          set -euxo pipefail
+      
+          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+          pwd
+          ls -la "$GITHUB_WORKSPACE"
+          ls -la "$GITHUB_WORKSPACE/.git"
+          git -C "$GITHUB_WORKSPACE" status
       - name: Initialize Arch
         shell: bash
         run: |
@@ -110,20 +120,19 @@ jobs:
           repo-add ps4-video.db.tar.zst *.pkg.tar.zst
 
       - name: Commit artifacts
-        working-directory: ${{ github.workspace }}
+        shell: bash
         run: |
           set -euxo pipefail
-
-          cd "$GITHUB_WORKSPACE"/"$REPO_DIR"/
-
+      
+          cd "$GITHUB_WORKSPACE"
+      
           pwd
           ls -la
-          ls -la "$GITHUB_WORKSPACE"
-          ls -la "$GITHUB_WORKSPACE/.git" || true
+          ls -la "$GITHUB_WORKSPACE/.git"
       
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          
-          git add *
+      
+          git add repo/
           git commit -m "Update Mesa + drivers $(date +'%Y-%m-%d %H:%M')" || echo "No changes"
           git push
