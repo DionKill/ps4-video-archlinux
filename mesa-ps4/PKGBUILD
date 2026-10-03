@@ -204,7 +204,7 @@ case $MESA_WHICH_LLVM in
             'rust-bindgen'
         )
         depends+=(
-            'libLLVM.so=22.1-64'
+            'libLLVM.so'
             'clang'
             'libclc'
             'spirv-llvm-translator'
