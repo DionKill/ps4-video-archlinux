@@ -204,7 +204,7 @@ case $MESA_WHICH_LLVM in
             'rust-bindgen'
         )
         depends+=(
-            'libLLVM.so=22.1-64'
+            'libLLVM.so'
             'clang'
             'libclc'
             'spirv-llvm-translator'
@@ -256,7 +256,7 @@ build () {
     local meson_options=(
         -D android-libbacktrace=disabled
         -D b_ndebug=true
-        -D b_lto=false
+        -D b_lto=true
         -D egl=enabled
         -D gallium-drivers=${_gallium_drivers}
         -D gallium-extra-hud=true
