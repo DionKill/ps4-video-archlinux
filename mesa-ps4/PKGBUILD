@@ -7,7 +7,7 @@
 
 pkgname=mesa-ps4
 pkgdesc="an open-source implementation of the OpenGL specification, git version"
-pkgver=26.2.2.226773.0ae52750c0c.05347e4
+pkgver=26.2.4.226965.9a0169f2a72.05347e4
 pkgrel=1
 arch=('x86_64')
 
@@ -204,7 +204,7 @@ case $MESA_WHICH_LLVM in
             'rust-bindgen'
         )
         depends+=(
-            'libLLVM.so=22.1-64'
+            'libLLVM.so'
             'clang'
             'libclc'
             'spirv-llvm-translator'
