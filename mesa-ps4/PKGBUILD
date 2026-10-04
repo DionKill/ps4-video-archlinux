@@ -7,7 +7,7 @@
 
 pkgname=mesa-ps4
 pkgdesc="an open-source implementation of the OpenGL specification, git version"
-pkgver=26.2.2.226773.0ae52750c0c.05347e4
+pkgver=26.2.4.226965.9a0169f2a72.05347e4
 pkgrel=1
 arch=('x86_64')
 
@@ -256,7 +256,7 @@ build () {
     local meson_options=(
         -D android-libbacktrace=disabled
         -D b_ndebug=true
-        -D b_lto=true
+        -D b_lto=false
         -D egl=enabled
         -D gallium-drivers=${_gallium_drivers}
         -D gallium-extra-hud=true

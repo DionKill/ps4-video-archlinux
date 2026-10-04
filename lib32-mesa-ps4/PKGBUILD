@@ -198,7 +198,7 @@ build () {
         -D platforms=x11,wayland \
         -D gallium-drivers=${_gallium_drivers} \
         -D vulkan-drivers=${_vulkan_drivers} \
-	-D b_lto=true \
+	-D b_lto=false \
         -D egl=enabled \
         -D gallium-extra-hud=true \
         -D vulkan-layers=device-select,overlay \
