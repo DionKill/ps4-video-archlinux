@@ -78,18 +78,18 @@ conflicts=(
 )
 url="https://www.mesa3d.org"
 license=('custom')
-source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git#branch=26.2'
+source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git'
         'LICENSE'
         'llvm32.native'
         'ps4-lib32-mesa.patch')
 sha256sums=('SKIP'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
             '3ea259740141b862e152e07c58f05cad539680541dc181a7233be0c93414e6fb'
-            'caedb1e86c2ed10097c424b61acda722b36dfc434909d8b312c75cc614407d8c')
+            'f7a78f8b894dc06bb6d210f2d0f9b04cdb51e285e40c2832a6813d4d88f465a9')
 b2sums=('SKIP'
         'cc60238726b35133b5b729fb4ed1e76e04136588533615d84b4a54656d5b41727d5e7ff06ef4de3eb102eed6669d6c5c5cb8ac9fbdf6fc25aa477877c5c3ba87'
         'f84a2ec7aa5cd0e3efcfee69897e3da5c6c7031a07b7c93b43f1a709cc0ae0fd312c56c659e7cb7f2e276cbe49be6e586f117320404d2978b09ae0969d919eaf'
-        '5d8221829bf3e3e0d54d1a8207cec009ac57e3e7b9ad72cbca3a41d04669fa7cda7258c8c0edea691b739c179fc14cd6eed5cacd86d3770093e2ecaf9956150b')
+        '139782f8d6b46e189953aad96a4f5630d93ba9c28d4b1031878b3b753ebf561ea1abedac9d998a05a96b29910fa23a6d5a255893c5b02293d997a6d974496552')
 
 # NINJAFLAGS is an env var used to pass commandline options to ninja
 # NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
@@ -168,6 +168,10 @@ prepare() {
     if [  -d _build ]; then
         rm -rf _build
     fi
+    
+    cd mesa
+    git checkout mesa-26.0.8
+    cd ..
 
     local _patchfile
     for _patchfile in "${source[@]}"; do
