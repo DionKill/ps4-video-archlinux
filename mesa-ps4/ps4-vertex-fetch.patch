@@ -1,0 +1,147 @@
+diff --git a/src/amd/common/ac_gpu_info.c b/src/amd/common/ac_gpu_info.c
+index 84dc74d..3ef3885 100644
+--- a/src/amd/common/ac_gpu_info.c
++++ b/src/amd/common/ac_gpu_info.c
+@@ -323,6 +323,7 @@ ac_fill_cu_info(struct radeon_info *info, struct drm_amdgpu_info_device *device_
+    cu_info->has_gfx6_mrt_export_bug =
+       info->family == CHIP_TAHITI || info->family == CHIP_PITCAIRN || info->family == CHIP_VERDE;
+    cu_info->has_vtx_format_alpha_adjust_bug = info->gfx_level <= GFX8 && info->family != CHIP_STONEY;
++   cu_info->has_unaligned_vtx_fetch_bug = info->family == CHIP_LIVERPOOL || info->family == CHIP_GLADIUS;
+ 
+    /* On GFX6-7, SMEM instructions access memory when num_records == 0 or offset >= num_records,
+     * which causes VM faults when reading a page that isn't mapped. To prevent the VM faults:
+diff --git a/src/amd/common/ac_gpu_info.h b/src/amd/common/ac_gpu_info.h
+index 2ed915b..7dde99f 100644
+--- a/src/amd/common/ac_gpu_info.h
++++ b/src/amd/common/ac_gpu_info.h
+@@ -138,6 +138,7 @@ struct ac_cu_info {
+    bool has_gfx6_mrt_export_bug : 1;
+    /* Pre-GFX9: A bug where the alpha component of 10_10_10_2 formats is always unsigned.*/
+    bool has_vtx_format_alpha_adjust_bug : 1;
++   bool has_unaligned_vtx_fetch_bug : 1;
+    /* GFX6-7: SMEM accesses memory even when it's out of bounds */
+    bool has_smem_oob_access_bug : 1;
+ };
+diff --git a/src/amd/common/ac_shader_util.c b/src/amd/common/ac_shader_util.c
+index 7ac9733..6da02c4 100644
+--- a/src/amd/common/ac_shader_util.c
++++ b/src/amd/common/ac_shader_util.c
+@@ -507,14 +507,15 @@ ac_get_vtx_format_info(enum amd_gfx_level level, bool has_alpha_adjust_bug, enum
+  * offset is 2 for R16G16B16A16_SNORM).
+  */
+ static bool
+-is_fetch_size_safe(const enum amd_gfx_level gfx_level, const struct ac_vtx_format_info* vtx_info,
++is_fetch_size_safe(const enum amd_gfx_level gfx_level, bool unaligned_vtx_fetch_bug,
++                   const struct ac_vtx_format_info* vtx_info,
+                    const unsigned offset, const unsigned alignment, const unsigned channels)
+ {
+    if (!(vtx_info->has_hw_format & BITFIELD_BIT(channels - 1)))
+       return false;
+ 
+    unsigned vertex_byte_size = vtx_info->chan_byte_size * channels;
+-   return (gfx_level >= GFX7 && gfx_level <= GFX9) ||
++   return (gfx_level >= GFX7 && gfx_level <= GFX9 && !unaligned_vtx_fetch_bug) ||
+           (offset % vertex_byte_size == 0 && MAX2(alignment, 1) % vertex_byte_size == 0);
+ }
+ 
+@@ -523,7 +524,8 @@ is_fetch_size_safe(const enum amd_gfx_level gfx_level, const struct ac_vtx_forma
+  * instructions without triggering alignment-related issues.
+  */
+ unsigned
+-ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, const struct ac_vtx_format_info* vtx_info,
++ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, bool unaligned_vtx_fetch_bug,
++                       const struct ac_vtx_format_info* vtx_info,
+                        const unsigned offset, const unsigned max_channels, const unsigned alignment,
+                        const unsigned num_channels)
+ {
+@@ -532,13 +534,13 @@ ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, const struct ac_vtx_f
+       return vtx_info->num_channels;
+ 
+    /* Early exit if the specified number of channels is fine. */
+-   if (is_fetch_size_safe(gfx_level, vtx_info, offset, alignment, num_channels))
++   if (is_fetch_size_safe(gfx_level, unaligned_vtx_fetch_bug, vtx_info, offset, alignment, num_channels))
+       return num_channels;
+ 
+    /* First, assume that more load instructions are worse and try using a larger data format. */
+    unsigned new_channels = num_channels + 1;
+    while (new_channels <= max_channels &&
+-          !is_fetch_size_safe(gfx_level, vtx_info, offset, alignment, new_channels)) {
++          !is_fetch_size_safe(gfx_level, unaligned_vtx_fetch_bug, vtx_info, offset, alignment, new_channels)) {
+       new_channels++;
+    }
+ 
+@@ -549,7 +551,7 @@ ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, const struct ac_vtx_f
+    /* Try decreasing load size (at the cost of more load instructions). */
+    new_channels = num_channels;
+    while (new_channels > 1 &&
+-          !is_fetch_size_safe(gfx_level, vtx_info, offset, alignment, new_channels)) {
++          !is_fetch_size_safe(gfx_level, unaligned_vtx_fetch_bug, vtx_info, offset, alignment, new_channels)) {
+       new_channels--;
+    }
+ 
+diff --git a/src/amd/common/ac_shader_util.h b/src/amd/common/ac_shader_util.h
+index 0a4da75..10af910 100644
+--- a/src/amd/common/ac_shader_util.h
++++ b/src/amd/common/ac_shader_util.h
+@@ -253,7 +253,8 @@ const struct ac_vtx_format_info *ac_get_vtx_format_info(enum amd_gfx_level level
+                                                         bool has_alpha_adjust_bug,
+                                                         enum pipe_format fmt);
+ 
+-unsigned ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, const struct ac_vtx_format_info* vtx_info,
++unsigned ac_get_safe_fetch_size(const enum amd_gfx_level gfx_level, bool unaligned_vtx_fetch_bug,
++                                const struct ac_vtx_format_info* vtx_info,
+                                 const unsigned offset, const unsigned max_channels, const unsigned alignment,
+                                 const unsigned num_channels);
+ 
+diff --git a/src/amd/compiler/aco_ir.cpp b/src/amd/compiler/aco_ir.cpp
+index fcad723..2effa3d 100644
+--- a/src/amd/compiler/aco_ir.cpp
++++ b/src/amd/compiler/aco_ir.cpp
+@@ -107,6 +107,7 @@ init_program(Program* program, Stage stage, const struct aco_shader_info* info,
+ 
+    program->dev.sram_ecc_enabled = options->cu_info->has_sram_ecc_enabled;
+    program->dev.has_point_sample_accel = options->cu_info->has_point_sample_accel;
++   program->dev.unaligned_vtx_fetch_bug = options->cu_info->has_unaligned_vtx_fetch_bug;
+    program->dev.has_gfx6_mrt_export_bug = options->cu_info->has_gfx6_mrt_export_bug;
+ 
+    program->dev.has_fast_fma32 = options->cu_info->has_fast_fma32;
+diff --git a/src/amd/compiler/aco_ir.h b/src/amd/compiler/aco_ir.h
+index 76ffc71..236cf1b 100644
+--- a/src/amd/compiler/aco_ir.h
++++ b/src/amd/compiler/aco_ir.h
+@@ -2278,6 +2278,7 @@ struct DeviceInfo {
+    bool xnack_enabled = false;
+    bool sram_ecc_enabled = false;
+    bool has_point_sample_accel = false;
++   bool unaligned_vtx_fetch_bug = false;
+    bool has_gfx6_mrt_export_bug = false;
+ 
+    int32_t scratch_global_offset_min;
+diff --git a/src/amd/compiler/instruction_selection/aco_select_nir_intrinsics.cpp b/src/amd/compiler/instruction_selection/aco_select_nir_intrinsics.cpp
+index e6fd196..43b3b58 100644
+--- a/src/amd/compiler/instruction_selection/aco_select_nir_intrinsics.cpp
++++ b/src/amd/compiler/instruction_selection/aco_select_nir_intrinsics.cpp
+@@ -1383,7 +1383,8 @@ mtbuf_load_callback(Builder& bld, const LoadEmitInfo& info, unsigned bytes_neede
+    /* Calculate maximum number of components loaded according to alignment. */
+    unsigned max_fetched_components = bytes_needed / info.component_size;
+    max_fetched_components =
+-      ac_get_safe_fetch_size(bld.program->gfx_level, vtx_info, info.const_offset, max_components,
++      ac_get_safe_fetch_size(bld.program->gfx_level, bld.program->dev.unaligned_vtx_fetch_bug, vtx_info,
++                             info.const_offset, max_components,
+                              alignment, max_fetched_components);
+    const unsigned fetch_fmt = vtx_info->hw_format[max_fetched_components - 1];
+    /* Adjust bytes needed in case we need to do a smaller load due to alignment.
+diff --git a/src/amd/llvm/ac_llvm_build.c b/src/amd/llvm/ac_llvm_build.c
+index 793c501..da1f75c 100644
+--- a/src/amd/llvm/ac_llvm_build.c
++++ b/src/amd/llvm/ac_llvm_build.c
+@@ -1158,7 +1158,8 @@ LLVMValueRef ac_build_safe_tbuffer_load(struct ac_llvm_context *ctx, LLVMValueRe
+       const unsigned fetch_alignment = fetch_align_offset ? 1 << (ffs(fetch_align_offset) - 1) : align_mul;
+ 
+       fetch_num_channels =
+-         ac_get_safe_fetch_size(ctx->gfx_level, vtx_info, fetch_const_offset,
++         ac_get_safe_fetch_size(ctx->gfx_level, ctx->info->cu_info.has_unaligned_vtx_fetch_bug, vtx_info,
++                                fetch_const_offset,
+                                 max_channels - i, fetch_alignment, num_channels - i);
+       const unsigned fetch_format = vtx_info->hw_format[fetch_num_channels - 1];
+       LLVMValueRef fetch_voffset =
