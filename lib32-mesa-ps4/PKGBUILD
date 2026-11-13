@@ -13,7 +13,7 @@
 pkgname=lib32-mesa-ps4
 pkgdesc="an open-source implementation of the OpenGL specification, git version"
 pkgver=26.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 
 _gallium_drivers="radeonsi,llvmpipe,softpipe,zink"   # radeonsi main + minimal software fallback
@@ -81,15 +81,18 @@ license=('custom')
 source=('mesa::git+https://gitlab.freedesktop.org/mesa/mesa.git'
         'LICENSE'
         'llvm32.native'
-        'ps4-lib32-mesa.patch')
+        'ps4-lib32-mesa.patch'
+        'ps4-vertex-fetch.patch')
 sha256sums=('SKIP'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
             '3ea259740141b862e152e07c58f05cad539680541dc181a7233be0c93414e6fb'
-            'f7a78f8b894dc06bb6d210f2d0f9b04cdb51e285e40c2832a6813d4d88f465a9')
+            'f7a78f8b894dc06bb6d210f2d0f9b04cdb51e285e40c2832a6813d4d88f465a9'
+            '51ac92a0ddeef3e7e9f3497ec926496b45687983eba466a8b6a7b339e8b53af3')
 b2sums=('SKIP'
         'cc60238726b35133b5b729fb4ed1e76e04136588533615d84b4a54656d5b41727d5e7ff06ef4de3eb102eed6669d6c5c5cb8ac9fbdf6fc25aa477877c5c3ba87'
         'f84a2ec7aa5cd0e3efcfee69897e3da5c6c7031a07b7c93b43f1a709cc0ae0fd312c56c659e7cb7f2e276cbe49be6e586f117320404d2978b09ae0969d919eaf'
-        '139782f8d6b46e189953aad96a4f5630d93ba9c28d4b1031878b3b753ebf561ea1abedac9d998a05a96b29910fa23a6d5a255893c5b02293d997a6d974496552')
+        '139782f8d6b46e189953aad96a4f5630d93ba9c28d4b1031878b3b753ebf561ea1abedac9d998a05a96b29910fa23a6d5a255893c5b02293d997a6d974496552'
+        'b96c479411012e87b99237466c5f5820868eb0bc022d559bcd7da0eab3c85fdfcd3c990ec11ce0f25f7997743bebdbb5bc1395ba69462c48b0f1131b0f411c04')
 
 # NINJAFLAGS is an env var used to pass commandline options to ninja
 # NOTE: It's your responbility to validate the value of $NINJAFLAGS. If unsure, don't set it.
