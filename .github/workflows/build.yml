@@ -108,8 +108,8 @@ jobs:
           build_and_install libdrm-ps4
           #build_and_install lib32-libdrm-ps4
           #build_and_install xf86-video-amdgpu-ps4
-          #build_and_install mesa-ps4
-          #build_and_install lib32-mesa-ps4
+          build_and_install mesa-ps4
+          build_and_install lib32-mesa-ps4
 
       - name: Create repo
         shell: bash
